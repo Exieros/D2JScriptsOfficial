@@ -1,0 +1,122 @@
+﻿<root>
+	<styles>		
+		<include src="s2r://panorama/styles/invokerpanel2.css" />
+	</styles>
+	<script>
+	var Abilityes = $('#Abilityes').Children()
+	var MyEnt = Players.GetPlayerHeroEntityIndex( Game.GetLocalPlayerID() )
+	function invokerpanelr(){
+		var InvokeKD = Abilities.GetCooldownTimeRemaining( Entities.GetAbilityByName( MyEnt, 'invoker_invoke' ) )
+		for (i = 0; i<=9; i++){
+			var Ab = Entities.GetAbilityByName( MyEnt, Abilityes[i].Children()[0].Children()[0].abilityname )
+			var ManaCost = Abilities.GetManaCost( parseInt(Ab) )
+			var Cooldown = Abilities.GetCooldownTimeRemaining( parseInt(Ab) )
+			Abilityes[i].Children()[1].text = ManaCost
+			if ( Cooldown == 0 ){
+				Abilityes[i].Children()[0].Children()[0].RemoveClass('OnCD')
+				Abilityes[i].Children()[0].Children()[1].text = ''
+			}else{
+				Abilityes[i].Children()[0].Children()[0].AddClass('OnCD')
+				Abilityes[i].Children()[0].Children()[1].text = Math.round(Cooldown)
+			}
+		}
+	}
+
+	function Cast( a, b, c ){
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, a ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, b ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, c ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, 5 ), MyEnt, false ) 
+	}
+	
+	function invoker_cold_snap(){
+		Cast(0,0,0)
+	}
+	try{Game.AddCommand( '__InvokerPanel_ColdSnap', function(){
+		invoker_cold_snap()
+	}, '',0 )}catch(e){}
+	function invoker_ghost_walk(){
+		Cast(0,0,1)
+	}
+	try{Game.AddCommand( '__InvokerPanel_GhostWalk', function(){
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, 0 ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, 0 ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, 1 ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, 5 ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, 1 ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, 1 ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, 1 ), MyEnt, false )
+		Abilities.ExecuteAbility( Entities.GetAbility( MyEnt, 3 ), MyEnt, false )
+	}, '',0 )}catch(e){}
+	function invoker_ice_wall(){
+		Cast(0,0,2)
+	}
+	try{Game.AddCommand( '__InvokerPanel_IceWall', function(){
+		invoker_ice_wall()
+	}, '',0 )}catch(e){}
+	function invoker_emp(){
+		Cast(1,1,1)
+	}
+	try{Game.AddCommand( '__InvokerPanel_EMP', function(){
+		invoker_emp()
+	}, '',0 )}catch(e){}
+	function invoker_tornado(){
+		Cast(1,1,0)
+	}
+	try{Game.AddCommand( '__InvokerPanel_Tornado', function(){
+		invoker_tornado()
+	}, '',0 )}catch(e){}
+	function invoker_alacrity(){
+		Cast(1,1,2)
+	}
+	try{Game.AddCommand( '__InvokerPanel_Alacrity', function(){
+		invoker_alacrity()
+	}, '',0 )}catch(e){}
+	function invoker_sun_strike(){
+		Cast(2,2,2)
+	}
+	try{Game.AddCommand( '__InvokerPanel_SunStrike', function(){
+		invoker_sun_strike()
+	}, '',0 )}catch(e){}
+	function invoker_forge_spirit(){
+		Cast(2,2,0)
+	}
+	try{Game.AddCommand( '__InvokerPanel_ForgeSpirit', function(){
+		invoker_forge_spirit()
+	}, '',0 )}catch(e){}
+	function invoker_chaos_meteor(){
+		Cast(2,2,1)
+	}
+	try{Game.AddCommand( '__InvokerPanel_ChaosMeteor', function(){
+		invoker_chaos_meteor()
+	}, '',0 )}catch(e){}
+	function invoker_deafening_blast(){
+		Cast(0,1,2) 
+	}
+	try{Game.AddCommand( '__InvokerPanel_DeafeningBlast', function(){
+		invoker_deafening_blast()
+	}, '',0 )}catch(e){}
+	function f(){ $.Schedule( 0.5,function(){
+		if($.GetContextPanel().visible)
+			invokerpanelr()
+			f()
+		}
+	)}
+	f()
+	</script>
+	<Panel class="InvokerPanelMain" style="background-color:#000000EE;border-radius: 10px;padding: 0 3px;">
+		<Panel id="Abilityes">
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_deafening_blast' onactivate='Cast(0,1,2)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_ghost_walk' onactivate='Cast(0,0,1)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_tornado' onactivate='Cast(1,1,0)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_chaos_meteor' onactivate='Cast(2,2,1)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_emp' onactivate='Cast(1,1,1)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_ice_wall' onactivate='Cast(0,0,2)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_sun_strike' onactivate='Cast(2,2,2)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_cold_snap' onactivate='Cast(0,0,0)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_forge_spirit' onactivate='Cast(2,2,0)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+			<Panel><Button><DOTAAbilityImage class="invoker" abilityname='invoker_alacrity' onactivate='Cast(1,1,2)'/><Label class="Cooldown"/></Button><Label class="ManaCost"/></Panel>
+		</Panel>
+		<Panel id="OnInvokeKD"></Panel> 
+    </Panel> 
+</root>

@@ -1,0 +1,49 @@
+﻿<root>
+	<Panel class="ItemsPanel1" style="width:234px;flow-children: down;background-color:black;">
+		<Panel style="width:100%;height:24px;flow-children:right;">
+			<DOTAHeroImage heroname="" style="width:40px;height:24px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+		</Panel>
+		<Panel style="width:100%;height:24px;flow-children:right;">
+			<DOTAHeroImage heroname="" style="width:40px;height:24px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+		</Panel>
+		<Panel style="width:100%;height:24px;flow-children:right;">
+			<DOTAHeroImage heroname="" style="width:40px;height:24px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+		</Panel>
+		<Panel style="width:100%;height:24px;flow-children:right;">
+			<DOTAHeroImage heroname="" style="width:40px;height:24px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+		</Panel>
+		<Panel style="width:100%;height:24px;flow-children:right;">
+			<DOTAHeroImage heroname="" style="width:40px;height:24px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+			<DOTAItemImage itemname="" style="height:24px;width:32px;"/>
+		</Panel>
+    </Panel> 
+</root>
