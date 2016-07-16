@@ -76,7 +76,7 @@ Game.EzProcastF = function(){
 
 var MyInv = []
 function UpdateUnv(){
-	if (!EzProcast01.checked)
+	if (!EzProcast.checked)
 		return
 	var MyEnt = Players.GetPlayerHeroEntityIndex(Game.GetLocalPlayerID())
 	var Inv = Game.GetInventory(MyEnt)
@@ -105,7 +105,7 @@ function UpdateUnv(){
 	}
 }
 
-EzProcast01OnOffLoad = function(){
+EzProcastOnOffLoad = function(){
 	Game.GetFile('ezprocast/panel.xml', function(a){
 		Game.Panels.EzProcast = $.CreatePanel( 'Panel', Game.GetMainHUD(), 'EzProcast1' )
 		Game.Panels.EzProcast.BLoadLayoutFromString( a, false, false )
@@ -141,8 +141,8 @@ EzProcast01OnOffLoad = function(){
 	});
 }
 
-function EzProcast01OnOff(){
-	if ( !EzProcast01.checked ){
+function EzProcastOnOff(){
+	if ( !EzProcast.checked ){
 		try{
 			Game.Panels.EzProcast.DeleteAsync(0)
 		}catch(e){}
@@ -150,10 +150,10 @@ function EzProcast01OnOff(){
 		Game.ScriptLogMsg('Script disabled: EzProcast-V0.1', '#ff0000')
 		
 	}else{
-		EzProcast01OnOffLoad()
+		EzProcastOnOffLoad()
 		Game.Subscribes.EzProcastonchatmsg = GameEvents.Subscribe( 'player_chat', function(a){if(a.text=='-ez'){Game.EzProcastF()}} )
 		function L(){ $.Schedule( 0,function(){
-		if (EzProcast01.checked){
+		if (EzProcast.checked){
 			UpdateUnv()
 		}
 		L()
@@ -163,7 +163,7 @@ function EzProcast01OnOff(){
 	}
 }
 
-var Temp = $.CreatePanel( "Panel", $('#scripts'), "EzProcast01" )
-Temp.SetPanelEvent( 'onactivate', EzProcast01OnOff )
-Temp.BLoadLayoutFromString( '<root><styles><include src="s2r://panorama/styles/dotastyles.vcss_c" /><include src="s2r://panorama/styles/magadan.vcss_c" /></styles><Panel><ToggleButton class="CheckBox" id="EzProcast01" text="EzProcast-V0.1"/></Panel></root>', false, false)  
-var EzProcast01 = $.GetContextPanel().FindChildTraverse( 'EzProcast01' ).Children()[0]
+var Temp = $.CreatePanel( "Panel", $('#scripts'), "EzProcast" )
+Temp.SetPanelEvent( 'onactivate', EzProcastOnOff )
+Temp.BLoadLayoutFromString( '<root><styles><include src="s2r://panorama/styles/dotastyles.vcss_c" /><include src="s2r://panorama/styles/magadan.vcss_c" /></styles><Panel><ToggleButton class="CheckBox" id="EzProcast" text="EzProcast-V0.1"/></Panel></root>', false, false)  
+var EzProcast = $.GetContextPanel().FindChildTraverse( 'EzProcast' ).Children()[0]

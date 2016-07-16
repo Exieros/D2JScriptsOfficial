@@ -7,6 +7,7 @@
 Автор: vk.com/exieros
 /////////////////////////////////////////////////
 -----------------------End---------------------*/
+
 var BlinkMaxRangeOnCheckBoxClick = function(){
 	if ( PerfectDagger.checked ){
 		GameUI.SetMouseCallback( function(eventName,arg){

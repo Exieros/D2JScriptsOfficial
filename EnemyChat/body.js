@@ -5,6 +5,7 @@
 Автор: vk.com/exieros
 /////////////////////////////////////////////////
 -----------------------End---------------------*/
+
 try{
 	Game.Panels.EnemyChat.DeleteAsync(0)
 	GameEvents.Unsubscribe( parseInt(Game.Subscribes.EnemyChatOnMsg) )
