@@ -6,72 +6,75 @@
 /////////////////////////////////////////////////
 -----------------------End---------------------*/
 
-try{
-	Game.Panels.EzProcast.DeleteAsync(0)
-	GameEvents.Unsubscribe( parseInt(Game.Subscribes.EzProcastonchatmsg) )
-}catch(e){}
+try{Game.Panels.EzProcast.DeleteAsync(0)}catch(e){}
 	
 var Config = []
 
-Game.EzProcastF = function(){
-	var MyEnt = Players.GetPlayerHeroEntityIndex(Game.GetLocalPlayerID())
-	var EntOnCursor = GameUI.FindScreenEntities( GameUI.GetCursorPosition() )
-	var CursorXYZ = Game.ScreenXYToWorld( GameUI.GetCursorPosition()[0],GameUI.GetCursorPosition()[1] )
-	var items = Game.Panels.EzProcast.Children()[2].Children()
-	var abils = []
-	for(i in items){
-		if(items[i].Children()[0].paneltype=='DOTAAbilityImage'){
-			abils.push(items[i].Children()[0].abilityname)
-		
-		}else if(items[i].Children()[0].paneltype=='DOTAItemImage'){
-			abils.push(items[i].Children()[0].itemname)
-		}
-	}
-	$.Msg('Abils: '+abils)
-	Game.EntStop(MyEnt, false)
-	for(i in abils){
-		var AbName = abils[i]
-		var Abil = Game.GetAbilityByName(MyEnt,abils[i])
-		var EzPBeh = Game.Behaviors( Abil )
-		var EzPDUTT = Abilities.GetAbilityTargetTeam( Abil )
-		var myxyz = Entities.GetAbsOrigin(MyEnt)
-		$.Msg('Team Target: '+EzPDUTT)
-		$.Msg('Ability Behavior: '+EzPBeh)
-		if(EzPBeh.indexOf(512)!=-1){
-			Game.ToggleAbil(MyEnt, Abil, true)
-			continue
+Game.Functions.EzProcastF = function(){
+		var MyEnt = Players.GetPlayerHeroEntityIndex(Game.GetLocalPlayerID())
+		var EntOnCursor = GameUI.FindScreenEntities( GameUI.GetCursorPosition() )
+		var CursorXYZ = Game.ScreenXYToWorld( GameUI.GetCursorPosition()[0],GameUI.GetCursorPosition()[1] )
+		var items = Game.Panels.EzProcast.Children()[2].Children()
+		var abils = []
+		for(i in items){
+			if(items[i].Children()[0].paneltype=='DOTAAbilityImage'){
+				abils.push(items[i].Children()[0].abilityname)
 			
-		}else if(EzPBeh.indexOf(4)!=-1){
-
-			Game.CastNoTarget(MyEnt, Abil, true)
-			continue
-			
-		}else if(EzPBeh.indexOf(16)!=-1){
-			$.Msg(Game.PointDistance(CursorXYZ,myxyz))
-			if(AbName=="item_blink" && Game.PointDistance(CursorXYZ,myxyz)<=400)
-				continue
-			Game.CastPosition(MyEnt, Abil, CursorXYZ, true)
-			continue
-			
-		}else if(AbName=="item_ethereal_blade" || AbName=="item_diffusal_blade" || AbName=="item_diffusal_blade_2"){
-			
-			if( EntOnCursor.length!=0 && Entities.IsEnemy(EntOnCursor[0].entityIndex ))
-				Game.CastTarget(MyEnt, Abil, EntOnCursor[0].entityIndex, true)
-			else
-				Game.CastTarget(MyEnt, Abil, MyEnt, true)
-			
-		}else if(EzPBeh.indexOf(8)!=-1 || EzPBeh.length == 0 ){
-			
-			if( parseInt(EzPDUTT)==3 || parseInt(EzPDUTT)==1 ){
-				Game.CastTarget(MyEnt, Abil, MyEnt, true)
-			}else if( parseInt(EzPDUTT)==4  || parseInt(EzPDUTT)==7 ){
-				Game.CastTarget(MyEnt, Abil, MyEnt, true)
-			}else if( parseInt(EzPDUTT)==2 ){
-				Game.CastTarget(MyEnt, Abil, EntOnCursor[0].entityIndex, true)
+			}else if(items[i].Children()[0].paneltype=='DOTAItemImage'){
+				abils.push(items[i].Children()[0].itemname)
 			}
-			
+		}
+		$.Msg('Abils: '+abils)
+		Game.EntStop(MyEnt, false)
+		for(i in abils){
+			var AbName = abils[i]
+			var Abil = Game.GetAbilityByName(MyEnt,abils[i])
+			var EzPBeh = Game.Behaviors( Abil )
+			var EzPDUTT = Abilities.GetAbilityTargetTeam( Abil )
+			var myxyz = Entities.GetAbsOrigin(MyEnt)
+			$.Msg('Team Target: '+EzPDUTT)
+			$.Msg('Ability Behavior: '+EzPBeh)
+			if(EzPBeh.indexOf(512)!=-1){
+				Game.ToggleAbil(MyEnt, Abil, true)
+				continue
+				
+			}else if(EzPBeh.indexOf(4)!=-1){
+
+				Game.CastNoTarget(MyEnt, Abil, true)
+				continue
+				
+			}else if(EzPBeh.indexOf(16)!=-1){
+				$.Msg(Game.PointDistance(CursorXYZ,myxyz))
+				if(AbName=="item_blink" && Game.PointDistance(CursorXYZ,myxyz)<=400)
+					continue
+				Game.CastPosition(MyEnt, Abil, CursorXYZ, true)
+				continue
+				
+			}else if(AbName=="item_ethereal_blade" || AbName=="item_diffusal_blade" || AbName=="item_diffusal_blade_2"){
+				
+				if( EntOnCursor.length!=0 && Entities.IsEnemy(EntOnCursor[0].entityIndex ))
+					Game.CastTarget(MyEnt, Abil, EntOnCursor[0].entityIndex, true)
+				else
+					Game.CastTarget(MyEnt, Abil, MyEnt, true)
+				
+			}else if(EzPBeh.indexOf(8)!=-1 || EzPBeh.length == 0 ){
+				
+				if( parseInt(EzPDUTT)==3 || parseInt(EzPDUTT)==1 ){
+					Game.CastTarget(MyEnt, Abil, MyEnt, true)
+				}else if( parseInt(EzPDUTT)==4  || parseInt(EzPDUTT)==7 ){
+					Game.CastTarget(MyEnt, Abil, MyEnt, true)
+				}else if( parseInt(EzPDUTT)==2 ){
+					Game.CastTarget(MyEnt, Abil, EntOnCursor[0].entityIndex, true)
+				}
+				
+			}
 		}
 	}
+
+
+if(!Game.Functions.EzProcast){
+	Game.Functions.EzProcast = true
+	Game.AddCommand("__EzProcast", Game.Functions.EzProcastF, "", 0)
 }
 
 var MyInv = []
@@ -146,12 +149,10 @@ function EzProcastOnOff(){
 		try{
 			Game.Panels.EzProcast.DeleteAsync(0)
 		}catch(e){}
-		GameEvents.Unsubscribe( Game.Subscribes.EzProcastonchatmsg )
 		Game.ScriptLogMsg('Script disabled: EzProcast-V0.1', '#ff0000')
 		
 	}else{
 		EzProcastOnOffLoad()
-		Game.Subscribes.EzProcastonchatmsg = GameEvents.Subscribe( 'player_chat', function(a){if(a.text=='-ez'){Game.EzProcastF()}} )
 		function L(){ $.Schedule( 0,function(){
 		if (EzProcast.checked){
 			UpdateUnv()

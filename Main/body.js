@@ -19,6 +19,7 @@ function RefreshToggles(){
 			Toggles[i].enabled = true
 }
 function MapLoaded(data){
+	Game.Functions = []
 	try{Game.AddCommand( '__ToggleSPanel', function(){
 		$.GetContextPanel().ToggleClass('PopupOpened')
 	}, '',0 )}catch(e){}
