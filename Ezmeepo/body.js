@@ -26,7 +26,7 @@ function EzMeepoF(){
 	if(Entities.GetUnitName(mainmeepo)!='npc_dota_hero_meepo')
 		return
 	meepo.splice(meepo.indexOf(mainmeepo))
-	if(spoof){
+	if(Game.spoof){
 		Game.Panels.EzMeepo.Children()[0].value+=1
 		for(i in meepo){
 			var poof = Entities.GetAbilityByName( meepo[i], 'meepo_poof' )
@@ -72,13 +72,8 @@ var EzMeepoOnCheckBoxClick = function(){
 		return
 	}
 
-	Game.Subscribes.EzMeepoonchatmsg = GameEvents.Subscribe( 'player_chat', function(a){
-		if(!EzMeepo.checked)
-			return
-		if(a.text=='-ezmeepo'){
-			if(spoof){spoof=false}else{spoof=true}
-		}
-		if(a.text=='-ezmeepo2'){
+
+		Game.Functions.Meepo = function(){
 			var meepo = Entities.GetAllEntitiesByName('npc_dota_hero_meepo')
 			var CursorXYZ = Game.ScreenXYToWorld( GameUI.GetCursorPosition()[0],GameUI.GetCursorPosition()[1] )
 			var mainmeepo = Players.GetLocalPlayerPortraitUnit()
@@ -93,7 +88,15 @@ var EzMeepoOnCheckBoxClick = function(){
 				return
 			}
 		}
-	})
+	if(!Game.EzMeepoCreate){
+		Game.EzMeepoCreate = true
+		Game.AddCommand("__EzMeepo_Poof", function(){if(Game.spoof){Game.spoof=false}else{Game.spoof=true}}, "", 0)
+	}
+	if(!Game.EzMeepoCreate2){
+		Game.EzMeepoCreate2 = true
+		Game.AddCommand("__EzMeepo_Earthbind", Game.Functions.Meepo, "", 0)
+	}
+	
 	//циклически замкнутый таймер с проверкой условия с интервалом 'interval'
 	function f(){ $.Schedule( interval,function(){
 		if (EzMeepo.checked){
