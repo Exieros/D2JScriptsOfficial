@@ -58,48 +58,10 @@ Game.SaveConfig = function(config, json){
 }
 
 
-//таймер, нежелательно использовать. Есть Game.Tick
+//Таймер. Лучше использовать $.Schedule() если это возможно
 Game.Every = function(start, time, tick, func){var startTime = Game.Time();var tickRate = tick;if(tick < 1){if(start < 0) tick--;tickRate = time / -tick;}var tickCount =  time/ tickRate;if(time < 0){tickCount = 9999999;}var numRan = 0;$.Schedule(start, (function(start,numRan,tickRate,tickCount){return function(){if(start < 0){start = 0;if(func()){return;}; }  var tickNew = function(){numRan++;delay = (startTime+tickRate*numRan)-Game.Time();if((startTime+tickRate*numRan)-Game.Time() < 0){delay = 0;}$.Schedule(delay, function(){if(func()){return;};tickCount--;if(tickCount > 0) tickNew();});};tickNew();}})(start,numRan,tickRate,tickCount));};
 
-//глобальный массив функций
-Game.GameTick = []
-Game.GameSTick = []
-Game.Tick = function(a){
-	t = Game.GameTick.indexOf(a)
-	if (t!=-1)
-		return;
-	Game.GameTick.push(a)
-}
-Game.DTick = function(a){
-	t = Game.GameTick.indexOf(a)
-	if (t==-1)
-		return;
-	delete Game.GameTick[t]
-}
-Game.STick = function(a){
-	t = Game.GameSTick.indexOf(a)
-	if (t!=-1)
-		return;
-	Game.GameSTick.push(a)
-}
-Game.DSTick = function(a){
-	t = Game.GameSTick.indexOf(a)
-	if (t==-1)
-		return;
-	delete Game.GameSTick[t]
-}
-if(Game.TicksRegistered == true){}else{
-	Game.Every(-1, -1, 0, function(){
-		for(a in Game.GameTick)
-			Game.GameTick[a]()
-	});
-	Game.Every(-1, -1, 1, function(){
-		for(a in Game.GameSTick)
-			Game.GameSTick[a]()
-	});
-	Game.TicksRegistered = true
-}
-//глобальный массив для хранения партиклов
+//глобальные массивы для хранения объектов, которые могут остаться в старой области видимости при перезагрузке скрипта
 if(!Array.isArray(Game.Particles))
 	Game.Particles = []
 if(!Array.isArray(Game.Panels))
@@ -117,19 +79,9 @@ if(Array.isArray(Game.Subscribes)){
 	}
 }
 Game.Subscribes = []
-Game.Subscribes.OnMapLoad = []
-Game.Subscribes.MoneyChanged = []
-Game.Subscribes.OnMapLoadCB = GameEvents.Subscribe('game_newmap', function(){
-	Game.EzTechies.Remotemines = []
-	for(i in Game.Subscribes.OnMapLoad)
-		Game.Subscribes.OnMapLoad[i]()
-})
-Game.Subscribes.MoneyChangedCB = GameEvents.Subscribe('dota_money_changed', function(){
-	for(i in Game.Subscribes.MoneyChanged)
-		Game.Subscribes.MoneyChanged[i]()
-})
 
 
+/*         ФУНКЦИИ ДЛЯ РАБОТЫ С UI     */         
 //сообщение в боковую панель
 Game.ScriptLogMsg = function(msg, color){
 	var ScriptLog = $('#ScriptLog')
@@ -145,7 +97,6 @@ Game.ScriptLogMsg = function(msg, color){
 	ScriptLogMessage.DeleteAsync(7)
 	Game.AnimatePanel( ScriptLogMessage, {"opacity": "0;"}, 2, "linear", 4)
 }
-
 //Функция делает панельку перемещаемой кликом мыши по ней. callback нужен например для того, чтобы сохранить координаты панели в файл
 GameUI.MovePanel = function(a, callback){
 	var e = function(){
@@ -168,7 +119,19 @@ GameUI.MovePanel = function(a, callback){
 	}
 	a.SetPanelEvent( 'onactivate', e)
 }
-
+//добавление чекбокса в список скриптов
+Game.AddScript = function(type,name,callback){
+	if(type==1){
+		var Temp = $.CreatePanel( "Panel", $('#scripts'), name )
+		Temp.SetPanelEvent( 'onactivate', callback )
+		Temp.BLoadLayoutFromString( '<root><styles><include src="s2r://panorama/styles/dotastyles.vcss_c" /><include src="s2r://panorama/styles/magadan.vcss_c" /></styles><Panel><ToggleButton class="CheckBox" id="'+name+'" text="'+name+'"/></Panel></root>', false, false)
+		return $.GetContextPanel().FindChildTraverse(name).Children()[0]
+	}
+	$("#scripts").Children().sort(function(a,b){
+		if (a.text > b.text) return 1;
+		if (a.text < b.text) return -1;
+	})
+}
 //нахождение главного родительского HUD`a
 Game.GetMainHUD = function(){
 	var globalContext=$.GetContextPanel()
@@ -181,6 +144,28 @@ Game.GetMainHUD = function(){
 	}
 	return globalContext
 }
+//анимирование панелей. Источник moddota.com
+var AnimatePanel_DEFAULT_DURATION = "300.0ms";
+var AnimatePanel_DEFAULT_EASE = "linear";
+Game.AnimatePanel = function(panel, values, duration, ease, delay)
+{
+	var durationString = (duration != null ? parseInt(duration * 1000) + ".0ms" : AnimatePanel_DEFAULT_DURATION);
+	var easeString = (ease != null ? ease : AnimatePanel_DEFAULT_EASE);
+	var delayString = (delay != null ? parseInt(delay * 1000) + ".0ms" : "0.0ms"); 
+	var transitionString = durationString + " " + easeString + " " + delayString;
+	var i = 0;
+	var finalTransition = ""
+	for (var property in values)
+	{
+		finalTransition = finalTransition + (i > 0 ? ", " : "") + property + " " + transitionString;
+		i++;
+	}
+	panel.style.transition = finalTransition + ";";
+	for (var property in values)
+		panel.style[property] = values[property];
+}
+/*         END       */ 
+
 
 //получение высоты полоски hp у героев
 Game.HBOffsets={"npc_dota_hero_lone_druid": 145, 
@@ -280,6 +265,18 @@ Game.DisassembleItem = function(ent, item, queue){
 	var order = {};
 	order.OrderType = dotaunitorder_t.DOTA_UNIT_ORDER_DISASSEMBLE_ITEM 
 	order.UnitIndex = ent
+	order.AbilityIndex = item
+	order.Queue = queue
+	order.ShowEffects = false
+	Game.PrepareUnitOrders( order )
+}
+
+//разобрать артефакт
+Game.DropItem = function(ent, item, xyz, queue){
+	var order = {};
+	order.OrderType = dotaunitorder_t.DOTA_UNIT_ORDER_DROP_ITEM
+	order.UnitIndex = ent
+	order.Position = xyz
 	order.AbilityIndex = item
 	order.Queue = queue
 	order.ShowEffects = false
@@ -434,28 +431,6 @@ Game.GetBuffsNames = function(ent){
 	return buffs
 }
 
-//анимирование панелей. Источник moddota.com
-var AnimatePanel_DEFAULT_DURATION = "300.0ms";
-var AnimatePanel_DEFAULT_EASE = "linear";
-Game.AnimatePanel = function(panel, values, duration, ease, delay)
-{
-	var durationString = (duration != null ? parseInt(duration * 1000) + ".0ms" : AnimatePanel_DEFAULT_DURATION);
-	var easeString = (ease != null ? ease : AnimatePanel_DEFAULT_EASE);
-	var delayString = (delay != null ? parseInt(delay * 1000) + ".0ms" : "0.0ms"); 
-	var transitionString = durationString + " " + easeString + " " + delayString;
-	var i = 0;
-	var finalTransition = ""
-	for (var property in values)
-	{
-		finalTransition = finalTransition + (i > 0 ? ", " : "") + property + " " + transitionString;
-		i++;
-	}
-	panel.style.transition = finalTransition + ";";
-	for (var property in values)
-		panel.style[property] = values[property];
-}
-
-
 //клонирование объекта
 Game.CloneObject = function(obj) {
     if (null == obj || "object" != typeof obj) return obj;
@@ -472,7 +447,6 @@ Game.VelocityWaypoint = function(ent, time){
 	var movespeed = Entities.GetIdealSpeed(ent)
 	return [zxc[0]+forward[0]*movespeed*time,zxc[1]+forward[1]*movespeed*time,zxc[2]+forward[2]*movespeed*time]
 }
-
 
 //SetCameraTargetPosition(10,10)
 /*
