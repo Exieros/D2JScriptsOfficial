@@ -6,10 +6,6 @@
 Автор: vk.com/exieros
 /////////////////////////////////////////////////
 -----------------------End---------------------*/
-z =  	Entities.GetAllEntities()
-var zxc = []
-for(i in z)
-	if()
 var ping = 0.25
 
 var AbuseManaItems = [
