@@ -6,7 +6,10 @@
 Автор: vk.com/exieros
 /////////////////////////////////////////////////
 -----------------------End---------------------*/
-
+z =  	Entities.GetAllEntities()
+var zxc = []
+for(i in z)
+	if()
 var ping = 0.25
 
 var AbuseManaItems = [
@@ -26,6 +29,7 @@ Game.Functions.ManaAbuseF = function(){
 		var Item = parseInt(Inv[key])
 		var ItemName = Abilities.GetAbilityName( Item )
 		var ManaPool = 0
+		ManaPool += Abilities.GetSpecialValueFor( Item, 'bonus_int' )
 		ManaPool += Abilities.GetSpecialValueFor( Item, 'bonus_intellect' )
 		ManaPool += Abilities.GetSpecialValueFor( Item, 'bonus_all_stats' )
 		ManaPool += Abilities.GetSpecialValueFor( Item, 'bonus_mana' )
