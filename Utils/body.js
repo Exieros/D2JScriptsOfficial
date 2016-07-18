@@ -430,6 +430,13 @@ Game.GetBuffsNames = function(ent){
 		buffs.push(Buffs.GetName(ent,Entities.GetBuff(ent,i)))
 	return buffs
 }
+Game.GetBuffByName = function(ent,buffname){
+	var buff = -1
+	for(i=0;i<Entities.GetNumBuffs(ent);i++)
+		if(Buffs.GetName(ent,Entities.GetBuff(ent,i))==buffname)
+			buff = Entities.GetBuff(ent,i)
+	return buff
+}
 
 //клонирование объекта
 Game.CloneObject = function(obj) {

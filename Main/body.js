@@ -20,9 +20,12 @@ function RefreshToggles(){
 }
 function MapLoaded(data){
 	Game.Functions = []
-	try{Game.AddCommand( '__ToggleSPanel', function(){
-		$.GetContextPanel().ToggleClass('PopupOpened')
-	}, '',0 )}catch(e){}
+	if(!Game.ToggleSPanelR){
+		Game.ToggleSPanelR = true
+		try{Game.AddCommand( '__ToggleSPanel', function(){
+			$.GetContextPanel().ToggleClass('PopupOpened')
+		}, '',0 )}catch(e){}
+	}
 	GameUI.SetCameraDistance( slider.value )
 	RefreshToggles()
 }
@@ -32,6 +35,8 @@ Reload.BLoadLayoutFromString( '<root><styles><include src="s2r://panorama/styles
 var Official = $.CreatePanel( 'Panel', $('#Buttons'), 'Button3' )
 Official.BLoadLayoutFromString( '<root><styles><include src="s2r://panorama/styles/dotastyles.vcss_c" /></styles><Button class="BlueButton" style="width:100%;margin: 1px;background-color: #3366aa33;" onactivate="DOTADisplayURL( \'http://vk.com/d2jscripts\' );"><Label text="Официальная группа ВК"/></Button></root>', false, false )
 var slider = $.GetContextPanel().FindChildInLayoutFile( "CameraDistance" )
+//КОСТЫЛЬ ОБНОВИТЬ XML
+	$('#scripts').style.height = "300px"
 slider.min = 1000
 slider.max = 1800
 slider.value = 1134

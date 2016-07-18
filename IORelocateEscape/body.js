@@ -7,7 +7,8 @@
 /////////////////////////////////////////////////
 -----------------------End---------------------*/
 
-const tpouttime = -10.0
+//ПИНГОЗАВИСИМЫЙ ПАРАМЕТР, С 0.1 У МЕНЯ ПРЕКРАСНО РАБОТАЛ СКРИПТ ПРИ ПИНГЕ 60 мс
+const tpouttime = 0.1
 
 var notify = false
 var cd = false
@@ -29,7 +30,7 @@ function IORelocateEscapeF(){
 		notify = true
 		GameEvents.SendEventClientSide( 'antiaddiction_toast', {"message":"Внимание, активирован IORelocateEscape!","duration":"3"})
 	}
-	if((parseInt(Buffs.GetRemainingTime(MyEnt,Buff)*10))/10==tpouttime&&!cd){
+	if((parseInt(Buffs.GetRemainingTime(MyEnt,Buff)*10))/10==tpouttime-10&&!cd){
 		cd = true
 		Abilities.CreateDoubleTapCastOrder( tp, MyEnt )
 	}
