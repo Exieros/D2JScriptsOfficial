@@ -1,4 +1,13 @@
-﻿var ping = 0.25
+﻿/*-----------------------------------------------
+//////////////// vk.com/d2jscripts //////////////
+/////////////////////////////////////////////////
+Выкладывает все предметы дающие запас маны,
+использует арканы или соулринг и собирает обратно.
+Автор: vk.com/exieros
+/////////////////////////////////////////////////
+-----------------------End---------------------*/
+
+var ping = 0.25
 
 var AbuseManaItems = [
 	"item_arcane_boots",
@@ -40,7 +49,11 @@ Game.Functions.ManaAbuseF = function(){
 	})
 	
 }
-if(!Game.ManaAbuseCreate){
-	Game.ManaAbuseCreate = true
+GameEvents.Subscribe('game_newmap', function(){
+	Game.Functions.ManaAbuse=true
+	Game.AddCommand("__ManaAbuse", Game.Functions.ManaAbuseF, "", 0)
+})
+if(!Game.Functions.ManaAbuse){
+	Game.Functions.ManaAbuse = true
 	Game.AddCommand("__ManaAbuse", Game.Functions.ManaAbuseF, "", 0)
 }

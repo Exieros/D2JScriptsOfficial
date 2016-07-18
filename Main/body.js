@@ -19,7 +19,6 @@ function RefreshToggles(){
 			Toggles[i].enabled = true
 }
 function MapLoaded(data){
-	Game.Functions = []
 	if(!Game.ToggleSPanelR){
 		Game.ToggleSPanelR = true
 		try{Game.AddCommand( '__ToggleSPanel', function(){
