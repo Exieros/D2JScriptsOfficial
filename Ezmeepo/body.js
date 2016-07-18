@@ -72,22 +72,25 @@ var EzMeepoOnCheckBoxClick = function(){
 		return
 	}
 
-
-		Game.Functions.Meepo = function(){
-			var meepo = Entities.GetAllEntitiesByName('npc_dota_hero_meepo')
-			var CursorXYZ = Game.ScreenXYToWorld( GameUI.GetCursorPosition()[0],GameUI.GetCursorPosition()[1] )
-			var mainmeepo = Players.GetLocalPlayerPortraitUnit()
-			for(i in meepo){
-				var earthbind = Entities.GetAbilityByName( meepo[i], 'meepo_earthbind' )
-				var cd = Abilities.GetCooldownTimeRemaining(earthbind)
-				if(cd!=0)
-					continue
-				GameUI.SelectUnit(meepo[i],false)
-				Game.CastPosition(meepo[i], earthbind, CursorXYZ, false)
-				GameUI.SelectUnit(mainmeepo,false)
-				return
-			}
+	Game.Functions.Meepo = function(){
+		var meepo = Entities.GetAllEntitiesByName('npc_dota_hero_meepo')
+		var CursorXYZ = Game.ScreenXYToWorld( GameUI.GetCursorPosition()[0],GameUI.GetCursorPosition()[1] )
+		var mainmeepo = Players.GetLocalPlayerPortraitUnit()
+		for(i in meepo){
+			var earthbind = Entities.GetAbilityByName( meepo[i], 'meepo_earthbind' )
+			var cd = Abilities.GetCooldownTimeRemaining(earthbind)
+			if(cd!=0)
+				continue
+			GameUI.SelectUnit(meepo[i],false)
+			Game.CastPosition(meepo[i], earthbind, CursorXYZ, false)
+			GameUI.SelectUnit(mainmeepo,false)
+			return
 		}
+	}
+	GameEvents.Subscribe('game_newmap', function(){
+		Game.EzMeepoCreate = false
+		Game.EzMeepoCreate = false
+	})
 	if(!Game.EzMeepoCreate){
 		Game.EzMeepoCreate = true
 		Game.AddCommand("__EzMeepo_Poof", function(){if(Game.spoof){Game.spoof=false}else{Game.spoof=true}}, "", 0)
@@ -132,8 +135,4 @@ var EzMeepoOnCheckBoxClick = function(){
 	Game.ScriptLogMsg('Script enabled: EzMeepo', '#00ff00')
 }
 
-//шаблонное добавление чекбокса в панель
-var Temp = $.CreatePanel( "Panel", $('#scripts'), "EzMeepo" )
-Temp.SetPanelEvent( 'onactivate', EzMeepoOnCheckBoxClick )
-Temp.BLoadLayoutFromString( '<root><styles><include src="s2r://panorama/styles/dotastyles.vcss_c" /><include src="s2r://panorama/styles/magadan.vcss_c" /></styles><Panel><ToggleButton class="CheckBox" id="EzMeepo" text="EzMeepo"/></Panel></root>', false, false)  
-var EzMeepo = $.GetContextPanel().FindChildTraverse( 'EzMeepo' ).Children()[0]
+var EzMeepo = Game.AddScript(1,"EzMeepo",EzMeepoOnCheckBoxClick)

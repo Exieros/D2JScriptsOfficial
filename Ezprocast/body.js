@@ -71,12 +71,6 @@ Game.Functions.EzProcastF = function(){
 		}
 	}
 
-
-if(!Game.Functions.EzProcast){
-	Game.Functions.EzProcast = true
-	Game.AddCommand("__EzProcast", Game.Functions.EzProcastF, "", 0)
-}
-
 var MyInv = []
 function UpdateUnv(){
 	if (!EzProcast.checked)
@@ -154,17 +148,21 @@ function EzProcastOnOff(){
 	}else{
 		EzProcastOnOffLoad()
 		function L(){ $.Schedule( 0,function(){
-		if (EzProcast.checked){
-			UpdateUnv()
-		}
+			if (EzProcast.checked){
+				UpdateUnv()
+			}
+			L()
+		})}
 		L()
-	})}
-	L()
+		GameEvents.Subscribe('game_newmap', function(){
+			Game.Functions.EzProcast = false
+			Game.Functions.EzProcast = false
+		})
+		if(!Game.Functions.EzProcast){
+			Game.Functions.EzProcast = true
+			Game.AddCommand("__EzProcast", Game.Functions.EzProcastF, "", 0)
+		}
 		Game.ScriptLogMsg('Script enabled: EzProcast-V0.1', '#00ff00')
 	}
 }
-
-var Temp = $.CreatePanel( "Panel", $('#scripts'), "EzProcast" )
-Temp.SetPanelEvent( 'onactivate', EzProcastOnOff )
-Temp.BLoadLayoutFromString( '<root><styles><include src="s2r://panorama/styles/dotastyles.vcss_c" /><include src="s2r://panorama/styles/magadan.vcss_c" /></styles><Panel><ToggleButton class="CheckBox" id="EzProcast" text="EzProcast-V0.1"/></Panel></root>', false, false)  
-var EzProcast = $.GetContextPanel().FindChildTraverse( 'EzProcast' ).Children()[0]
+var EzProcast = Game.AddScript(1,"EzProcast",EzProcastOnOff)
