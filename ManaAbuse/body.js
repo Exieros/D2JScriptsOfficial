@@ -11,7 +11,10 @@ var ping = 0.25
 var AbuseManaItems = [
 	"item_arcane_boots",
 	"item_guardian_greaves",
-	"item_soul_ring"
+	"item_soul_ring",
+	"item_magic_stick",
+	"item_magic_wand",
+	"item_enchanted_mango"
 ]
 
 Game.Functions.ManaAbuseF = function(){
